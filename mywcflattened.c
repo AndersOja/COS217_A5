@@ -28,7 +28,6 @@ static int iInWord = FALSE;      /* Bad style. */
 int main(void)
 {
    startWhile:
-
    if ((iChar = getchar()) == EOF) goto endWhile;
       lCharCount++;
 
@@ -36,7 +35,7 @@ int main(void)
          if (!iInWord) goto endIf1;
             lWordCount++;
             iInWord = FALSE;
-       goto endIf1;
+      goto endIf1;
       Else:
          if (iInWord) goto endIf1;
             iInWord = TRUE;
@@ -44,7 +43,7 @@ int main(void)
 
       if (iChar != '\n') goto startWhile;
          lLineCount++;
-      goto startWhile;
+   goto startWhile;
    endWhile:
 
 
