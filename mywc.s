@@ -68,7 +68,7 @@ startWhile:
 
         // if (!isspace(iChar)) goto Else
         adr     x0, iChar
-        ldrb     x0, [x0]
+        ldrb     w0, [x0]
         bl      isspace
         cmp     x0, FALSE
         beq     Else
@@ -108,7 +108,7 @@ Else:
 endIf1:
         // if (iChar != '\n') goto startWhile
         adr     x0, iChar
-        ldrb     x0, [x0]
+        ldrb     w0, [x0]
         mov     x1, '\n'
         cmp     x0, x1
         bne    startWhile
