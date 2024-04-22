@@ -58,8 +58,8 @@ startWhile:
         adr     x1, iChar
         str     x0, [x1]
         ldr     x0, [x1]
-        mov     x1, EOF
-        cmp     x0, w1
+        mov     x1, -1
+        cmp     x0, x1
         beq     endWhile
 
         //lCharCount++
