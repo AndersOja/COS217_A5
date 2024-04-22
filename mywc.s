@@ -1,4 +1,3 @@
-
         .equ    FALSE, 0
         .equ    TRUE, 1
         .equ    EOF, -1
