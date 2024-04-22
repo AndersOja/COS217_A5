@@ -62,73 +62,82 @@ startWhile:
         cmp     x0, x1
         beq     endWhile
 
-        //lCharCount++
+        // lCharCount++
         adr     x0, lCharCount
         ldr     x1, [x0]
         add     x1, x1, 1
         str     x1, [x0]
 
-        //if (!isspace(iChar)) goto Else;
+        // if (!isspace(iChar)) goto Else
         adr     x0, iChar
         ldr     x0, [x0]
         bl      isspace
         cmp     x0, FALSE
         beq     Else
 
-        //if (!iInWord) goto endIf1;
+        // if (!iInWord) goto endIf1
         adr     x0, iInWord
         ldr     x0, [x0]
         cmp     x0, FALSE
         beq     endIf1
-        //lWordCount++;
+
+        // lWordCount++
         adr     x0, lWordCount
         ldr     x1, [x0]
         add     x1, x1, 1
         str     x1, [x0]
-        //iInWord = FALSE;
+
+        // iInWord = FALSE
         adr     x0, iInWord
         mov     x1, FALSE
         str     x1, [x0]
-        //goto endIf1;
+
+        // goto endIf1
         b       endIf1
+
 Else:
-        //if (iInWord) goto endIf1;
+        // if (iInWord) goto endIf1
         adr     x0, iInWord
         ldr     x0, [x0]
         cmp     x0, TRUE
         beq     endIf1
-        //iInWord = TRUE;
+
+        // iInWord = TRUE
         adr     x0, iInWord
         mov     x1, TRUE
         str     x1, [x0]
+
 endIf1:
-        //if (iChar != '\n') goto startWhile;
+        // if (iChar != '\n') goto startWhile
         adr     x0, iChar
         ldr     x0, [x0]
         mov     x1, '\n'
         cmp     x0, x1
         bne    startWhile
-        //lLineCount++;
+
+        // lLineCount++
         adr     x0, lLineCount
         ldr     x1, [x0]
         add     x1, x1, 1
         str     x1, [x0]
-        // goto startWhile;
+        
+        // goto startWhile
         b       startWhile
 
 endWhile:
-        //if (!iInWord) goto endIf2;
+        // if (!iInWord) goto endIf2
         adr     x0, iInWord
         ldr     x0, [x0]
         cmp     x0, FALSE
         beq     endIf2
-        //lWordCount++;
+        // lWordCount++
         adr     x0, lWordCount
         ldr     x1, [x0]
         add     x1, x1, 1
         str     x1, [x0]
+
 endIf2:
-        //printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount);
+        // printf("%7ld %7ld %7ld\n", lLineCount, lWordCount, lCharCount)
         adr     x0, printfFormatStr
         adr     x1, lLineCount
         ldr     x1, [x1]
