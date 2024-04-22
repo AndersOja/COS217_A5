@@ -1,33 +1,43 @@
 
+        .equ    FALSE, 0
+        .equ    TRUE, 1
+
+//----------------------------------------------------------------------  
+
         .section .rodata
+printfFormatStr:
+        .string "%7ld %7ld %7ld\n"
 
 //----------------------------------------------------------------------
 
         .section .data
 
-lPower:
-        .quad   1
+lLineCount:
+        .quad   0
+lWordCount:
+        .quad   0
+lCharCount:
+        .quad   0
+iInWord:
+        .quad   0
+        
 
 //----------------------------------------------------------------------
 
         .section .bss
 
-lBase:
-        .skip   8
-
-lExp:
-        .skip   8
-
-lIndex:
-        .skip   8
+iChar:
+        .skip   4
 
 //----------------------------------------------------------------------
 
         .section .text
 
         //--------------------------------------------------------------
-        // Read a non-negative base and exponent from stdin.  Write
-        // base raised to the exponent power to stdout.  Return 0.
+        // Write to stdout counts of how many lines, words, and 
+        // characters are in stdin. A word is a sequence of 
+        // non-whitespace characters. Whitespace is defined by the 
+        // isspace() function. Return 0. 
         // int main(void)
         //--------------------------------------------------------------
 
@@ -42,28 +52,9 @@ main:
         sub     sp, sp, MAIN_STACK_BYTECOUNT
         str     x30, [sp]
 
-        // printf("Enter the base:  ")
-        adr     x0, basePromptStr
-        bl      printf
+startWhile:
+        // if ((iChar = getchar()) == EOF) goto endWhile;
 
-        // scanf("%d", &lBase)
-        adr     x0, scanfFormatStr
-        adr     x1, lBase
-        bl      scanf
-
-        // printf("Enter the exponent:  ")
-        adr     x0, expPromptStr
-        bl      printf
-
-        // scanf("%d", &lExp)
-        adr     x0, scanfFormatStr
-        adr     x1, lExp
-        bl      scanf
-
-        // lIndex = 1
-        mov     x0, 1
-        adr     x1, lIndex
-        str     x0, [x1]
 
 powerLoop:
 

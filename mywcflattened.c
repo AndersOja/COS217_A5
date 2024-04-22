@@ -48,7 +48,7 @@ int main(void)
    endWhile:
 
 
-   if (iInWord) goto endIf2;
+   if (!iInWord) goto endIf2;
       lWordCount++;
    endIf2:
 
