@@ -3,12 +3,12 @@ Assignment 5 readme File
 ------------------------------------------------------------------------
 Student 1: What is your name?
 
-
+Anders Oja
 
 ------------------------------------------------------------------------
 Student 2: What is your name?
 
-
+Joey Forzani
 
 ------------------------------------------------------------------------
 Student 1: What authorized sources of information did you use to
@@ -78,7 +78,13 @@ particular, what bugs are in your submission?
 ------------------------------------------------------------------------
 What is your mywc program test plan?
 
+Statement tests:
 
+mywcStatement0.txt: Contains an 'a' and a ' ' and so causes the computer
+to execute all lines except line 45 and line 51.
+
+mywcStatement1.txt: Contains a '\n' and an 'a' and so causes the 
+computer to execute all lines except 36 and 37.
 
 ------------------------------------------------------------------------
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,
