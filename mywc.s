@@ -56,8 +56,8 @@ startWhile:
         // if ((iChar = getchar()) == EOF) goto endWhile;
         bl      getchar
         adr     x1, iChar
-        str     x0, [x1]
-        cmp     x0, EOF
+        strb    w0, [x1]
+        cmp     w0, EOF
         beq     endWhile
 
         // lCharCount++
@@ -68,7 +68,7 @@ startWhile:
 
         // if (!isspace(iChar)) goto Else
         adr     x0, iChar
-        ldrb     w0, [x0]
+        ldrb    w0, [x0]
         bl      isspace
         cmp     x0, FALSE
         beq     Else
