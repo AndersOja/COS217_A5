@@ -108,7 +108,7 @@ endIf2:
         str     x0, [sp, lIndex]
 startForLoop1:
         // if(lIndex >= lSumLength) goto endForLoop1;
-        ldr     x0, [s, lIndex]
+        ldr     x0, [sp, lIndex]
         ldr     x1, [sp, lSumLength]
         cmp     x0, x1
         bge     endForLoop1
@@ -116,11 +116,12 @@ startForLoop1:
         ldr     x0, [sp, ulCarry]
         str     x0, [sp, ulSum]
         // ulCarry = 0;
-        str     zr, [sp, ulCarry]
+        mov     x0, 0
+        str     x0, [sp, ulCarry]
         // ulSum += oAddend1->aulDigits[lIndex];
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend1]
-        add     x1, 8
+        add     x1, x1, 8
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         add     x0, x0, x1
@@ -128,7 +129,7 @@ startForLoop1:
         // if (ulSum >= oAddend1->aulDigits[lIndex]) goto ForIf1;
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend1]
-        add     x1, 8
+        add     x1, x1, 8
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         cmp     x0, x1
@@ -140,14 +141,14 @@ ForIf1:
         // ulSum += oAddend2->aulDigits[lIndex];
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend2]
-        add     x1, 8
+        add     x1, x1, 8
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         add     x0, x0, x1
         // if (ulSum >= oAddend2->aulDigits[lIndex]) goto ForIf2;
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend2]
-        add     x1, 8
+        add     x1, x1, 8
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         cmp     x0, x1
