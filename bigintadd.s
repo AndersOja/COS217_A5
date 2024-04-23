@@ -152,7 +152,7 @@ startForLoop1:
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         cmp     x0, x1
-        bge     ForIf1
+        bhs     ForIf1
 
         // ulCarry = 1
         mov     x0, 1
@@ -175,7 +175,7 @@ ForIf1:
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         cmp     x0, x1
-        bge     ForIf2
+        bhs     ForIf2
 
         // ulCarry = 1
         mov     x0, 1
