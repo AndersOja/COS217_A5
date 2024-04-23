@@ -107,7 +107,6 @@ BigInt_add:
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long))
         ldr     x0, [sp, oSum]
         add     x0, x0, 8
-        ldr     x0, [x0]
         mov     x1, 0
         mov     x2, MAX_DIGITS
         mov     x3, 8
