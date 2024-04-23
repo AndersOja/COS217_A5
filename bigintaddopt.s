@@ -41,6 +41,7 @@ BigInt_larger:
         str     x30, [sp]
         str     x0, [sp, lLength1]
         str     x1, [sp, lLength2]
+        str     lLength1, [sp, lLength1]
 
         // if (lLength1 <= lLength2) goto Else1
         cmp     x0, x1
