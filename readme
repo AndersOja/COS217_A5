@@ -78,6 +78,23 @@ particular, what bugs are in your submission?
 ------------------------------------------------------------------------
 What is your mywc program test plan?
 
+Boundary tests:
+
+mywcBoundary0.txt: Empty file. Tests an output of 0 characters, lines, 
+or words. 
+
+mywcBoundary1.txt: Single character 'a'. Tests an output of 1 character, 
+1 word, and 0 lines. 
+
+mywcBoundary2.txt: Only a few newlines. Tests an output of 0 words, and 
+as many characters as lines. 
+
+mywcBoundary3.txt: A few random words. Tests an output of 0 lines, and 
+nonzero characters and words. 
+
+mywcBoundary4.txt: A line of all spaces. Tests an output of 0 lines and
+words, and a some characters.
+
 Statement tests:
 
 mywcStatement0.txt: Contains an 'a' and a ' ' and so causes the computer
@@ -85,6 +102,24 @@ to execute all lines except line 45 and line 51.
 
 mywcStatement1.txt: Contains a '\n' and an 'a' and so causes the 
 computer to execute all lines except 36 and 37.
+
+Stress tests:
+
+mywcStress0.txt: A long line of all 'a's. Tests counting 1 word with a 
+very large number of characters.
+
+mywcStress1.txt: A lot of newline characters. Tests counting a lot of 
+lines with no words. 
+
+mywcStress2.txt: A bunch of "word"s on many lines. Tests a large file 
+with a lot of words and lines. 
+
+mywcStress3.txt: A passage from Dickens. Tests a normal use case with 
+punctuation. 
+
+mywcStress4.txt: Complete gibberish. Tests a variety of special 
+characters and different whitespace characters in different 
+combinations.
 
 ------------------------------------------------------------------------
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,
