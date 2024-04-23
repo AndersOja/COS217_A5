@@ -30,28 +30,12 @@
 
         // Must be a multiple of 16
         .equ    LARGER_STACK_BYTECOUNT, 32
-        .equ    ADD_STACK_BYTECOUNT, 64
 
         // Offsets for local variables
-        
-        //BigInt-Larger
         .equ    lLength1, 8
         .equ    lLength2, 16
         .equ    lLarger, 24
 
-        //BigInt_add
-        .equ    oAddend1, 8
-        .equ    oAddend2, 16
-        .equ    oSum, 24
-        .equ    ulCarry, 32
-        .equ    ulSum, 40
-        .equ    lIndex, 48
-        .equ    lSumLength, 56
-
-
-
-        .global BigInt_add
-        .global BigInt_larger
 
 BigInt_larger:
         // Prolog
@@ -71,6 +55,20 @@ endIf1:
         ret
 
         .size   BigInt_larger, (. - BigInt_larger)
+
+
+        .equ    ADD_STACK_BYTECOUNT, 64
+
+        //Offsets for local variables
+        .equ    oAddend1, 8
+        .equ    oAddend2, 16
+        .equ    oSum, 24
+        .equ    ulCarry, 32
+        .equ    ulSum, 40
+        .equ    lIndex, 48
+        .equ    lSumLength, 56
+
+        .global BigInt_add
 
 BigInt_add:
         // Prolog
