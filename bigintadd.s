@@ -1,6 +1,6 @@
         .equ    FALSE, 0
         .equ    TRUE, 1
-        .equ    32768
+        .equ    MAX_DIGITS, 32768
 
 //----------------------------------------------------------------------  
 
@@ -51,7 +51,7 @@
 
 
         .global BigInt_add
-        .private BigInt_larger
+        .global BigInt_larger
 
 BigInt_larger:
         // Prolog
@@ -102,9 +102,10 @@ BigInt_add:
         bl      memset
 endIf2:
         // ulCarry = 0;
-        str     zr, [sp, ulCarry]
+        mov x0, 0
+        str     x0, [sp, ulCarry]
         // lIndex = 0;
-        str     zr, [sp, lIndex]
+        str     x0, [sp, lIndex]
 startForLoop1:
         // if(lIndex >= lSumLength) goto endForLoop1;
         ldr     x0, [s, lIndex]
