@@ -233,7 +233,6 @@ endIf3:
         // oSum->lLength = lSumLength
         ldr     x0, [sp, lSumLength]
         ldr     x1, [sp, oSum]
-        ldr     x1, [x1]
         str     x0, [x1]
 
         // Epilogue and return TRUE
