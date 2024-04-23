@@ -165,7 +165,7 @@ ForIf1:
         str     x0, [x1, x2, lsl 3]
         // lIndex++;
         add     x2, x2, 1
-        str     x2, [sp, ulIndex]
+        str     x2, [sp, lIndex]
         // goto startForLoop1
         b       startForLoop1
 endForLoop1:
