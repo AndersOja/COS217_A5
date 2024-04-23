@@ -107,7 +107,6 @@ BigInt_add:
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long))
         ldr     x0, [sp, oSum]
         add     x0, x0, 8
-        ldr     x0, [x0]
         mov     x1, 0
         mov     x2, MAX_DIGITS
         mov     x3, 8
@@ -116,7 +115,7 @@ BigInt_add:
 
 endIf2:
         // ulCarry = 0
-        mov x0, 0
+        mov     x0, 0
         str     x0, [sp, ulCarry]
 
         // lIndex = 0
@@ -167,6 +166,7 @@ ForIf1:
         ldr     x2, [sp, lIndex]
         ldr     x1, [x1, x2, lsl 3]
         add     x0, x0, x1
+        str     x0, [sp, ulSum]
 
         // if (ulSum >= oAddend2->aulDigits[lIndex]) goto ForIf2
         ldr     x0, [sp, ulSum]
@@ -233,7 +233,6 @@ endIf3:
         // oSum->lLength = lSumLength
         ldr     x0, [sp, lSumLength]
         ldr     x1, [sp, oSum]
-        ldr     x1, [x1]
         str     x0, [x1]
 
         // Epilogue and return TRUE
