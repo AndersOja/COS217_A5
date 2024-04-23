@@ -25,14 +25,10 @@
         // Must be a multiple of 16
         .equ    LARGER_STACK_BYTECOUNT, 32
 
-        // Offsets for local variables and callee saved registers
+        // Offsets for local variables
         .equ    lLength1, 8
         .equ    lLength2, 16
         .equ    lLarger, 24
-        lLength1    .req x19
-        lLength2    .req x20
-        lLarger     .req x21
-
 
 
 BigInt_larger:
@@ -41,7 +37,6 @@ BigInt_larger:
         str     x30, [sp]
         str     x0, [sp, lLength1]
         str     x1, [sp, lLength2]
-        str     lLength1, [sp, lLength1]
 
         // if (lLength1 <= lLength2) goto Else1
         cmp     x0, x1
@@ -82,6 +77,9 @@ endIf1:
         .equ    ulSum, 40
         .equ    lIndex, 48
         .equ    lSumLength, 56
+        .equ    LLENGTH, 0
+        .equ    AULDIGITS, 8
+        .equ    INDEXMULT, 3
 
         .global BigInt_add
 
@@ -96,22 +94,22 @@ BigInt_add:
         // lSumLength = BigInt_larger(oAddend1->lLength, 
         // oAddend2->lLength)
         ldr     x0, [sp, oAddend1]
-        ldr     x0, [x0]
+        ldr     x0, [x0, LLENGTH]
         ldr     x1, [sp, oAddend2]
-        ldr     x1, [x1]
+        ldr     x1, [x1, LLENGTH]
         bl      BigInt_larger
         str     x0, [sp, lSumLength]
 
         // if (oSum->lLength <= lSumLength) goto endIf2
         ldr     x0, [sp, oSum]
-        ldr     x0, [x0]
+        ldr     x0, [x0, LLENGTH]
         ldr     x1, [sp, lSumLength]
         cmp     x0, x1
         ble     endIf2
 
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long))
         ldr     x0, [sp, oSum]
-        add     x0, x0, 8
+        add     x0, x0, AULDIGITS
         mov     x1, 0
         mov     x2, MAX_DIGITS
         mov     x3, 8
@@ -144,18 +142,18 @@ startForLoop1:
         // ulSum += oAddend1->aulDigits[lIndex]
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend1]
-        add     x1, x1, 8
+        add     x1, x1, AULDIGITS
         ldr     x2, [sp, lIndex]
-        ldr     x1, [x1, x2, lsl 3]
+        ldr     x1, [x1, x2, lsl INDEXMULT]
         add     x0, x0, x1
         str     x0, [sp, ulSum]
 
         // if (ulSum >= oAddend1->aulDigits[lIndex]) goto ForIf1
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend1]
-        add     x1, x1, 8
+        add     x1, x1, AULDIGITS
         ldr     x2, [sp, lIndex]
-        ldr     x1, [x1, x2, lsl 3]
+        ldr     x1, [x1, x2, lsl INDEXMULT]
         cmp     x0, x1
         bhs     ForIf1
 
@@ -167,18 +165,18 @@ ForIf1:
         // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend2]
-        add     x1, x1, 8
+        add     x1, x1, AULDIGITS
         ldr     x2, [sp, lIndex]
-        ldr     x1, [x1, x2, lsl 3]
+        ldr     x1, [x1, x2, lsl INDEXMULT]
         add     x0, x0, x1
         str     x0, [sp, ulSum]
 
         // if (ulSum >= oAddend2->aulDigits[lIndex]) goto ForIf2
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oAddend2]
-        add     x1, x1, 8
+        add     x1, x1, AULDIGITS
         ldr     x2, [sp, lIndex]
-        ldr     x1, [x1, x2, lsl 3]
+        ldr     x1, [x1, x2, lsl INDEXMULT]
         cmp     x0, x1
         bhs     ForIf2
 
@@ -190,9 +188,9 @@ ForIf1:
         // oSum->aulDigits[lIndex] = ulSum
         ldr     x0, [sp, ulSum]
         ldr     x1, [sp, oSum]
-        add     x1, x1, 8
+        add     x1, x1, AULDIGITS
         ldr     x2, [sp, lIndex]
-        str     x0, [x1, x2, lsl 3]
+        str     x0, [x1, x2, lsl INDEXMULT]
 
         // lIndex++
         ldr     x0, [sp, lIndex]
@@ -225,9 +223,9 @@ endIf4:
         // oSum->aulDigits[lSumLength] = 1
         mov     x0, 1
         ldr     x1, [sp, oSum]
-        add     x1, x1, 8
+        add     x1, x1, AULDIGITS
         ldr     x2, [sp, lSumLength]
-        str     x0, [x1, x2, lsl 3]
+        str     x0, [x1, x2, lsl INDEXMULT]
 
         // lSumLength++
         ldr     x0, [sp, lSumLength]
@@ -238,7 +236,7 @@ endIf3:
         // oSum->lLength = lSumLength
         ldr     x0, [sp, lSumLength]
         ldr     x1, [sp, oSum]
-        str     x0, [x1]
+        str     x0, [x1, LLENGTH]
 
         // Epilogue and return TRUE
         mov x0, TRUE
