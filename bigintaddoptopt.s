@@ -106,7 +106,8 @@ startForLoop1:
         // ulSum += oAddend1->aulDigits[lIndex]
         add     x0, OADDEND1, AULDIGITS
         ldr     x0, [x0, LINDEX, lsl INDEXMULT]
-        adds    ULSUM, ULSUM, x0
+        add     ULSUM, ULSUM, x0
+        cmp     ULSUM, x0
         bhs     ForIf1
 
         // ulCarry = 1
@@ -116,7 +117,8 @@ ForIf1:
         // ulSum += oAddend2->aulDigits[lIndex]
         add     x0, OADDEND2, AULDIGITS
         ldr     x0, [x0, LINDEX, lsl INDEXMULT]
-        adds    ULSUM, ULSUM, x0
+        add     ULSUM, ULSUM, x0
+        cmp     ULSUM, x0
         bhs     ForIf2
 
         // ulCarry = 1
