@@ -114,13 +114,25 @@ noCarryLoop:
         b       endLoopNoCarry
 
 carryLoop:
+        // ulSum = 1
+        mov     ULSUM, 1
+        
         // ulSum += oAddend1->aulDigits[lIndex]
-        // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
-        ldr     x1, [OA2AULD, LINDEX, lsl INDEXMULT]
-        add     ULSUM, x0, x1 // need to add 1 to this somehow
-        adds    ULSUM, ULSUM, 1
+        adds    ULSUM, ULSUM, x0
+        bhs     carry
 
+        // ulSum += oAddend2->aulDigits[lIndex]
+        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
+        adds    ULSUM, ULSUM, x0
+        b       finishCarry
+
+carry:
+        // ulSum += oAddend2->aulDigits[lIndex]
+        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
+        add     ULSUM, ULSUM, x0
+
+finishCarry:
         // oSum->aulDigits[lIndex] = ulSum
         str     ULSUM, [OSAULD, LINDEX, lsl INDEXMULT]
 
