@@ -92,14 +92,14 @@ endLarger:
 
 endIf1:
         // lIndex = 0
-        mov     LINDEX, 0
+        adds    LINDEX, xzr, 0
 
-noCarryLoop:
+forLoopStart:
         // ulSum = oAddend1->aulDigits[lIndex]
         // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
         ldr     x1, [OA2AULD, LINDEX, lsl INDEXMULT]
-        adds    ULSUM, x0, x1
+        adcs    ULSUM, x0, x1
 
         // oSum->aulDigits[lIndex] = ulSum
         str     ULSUM, [OSAULD, LINDEX, lsl INDEXMULT]
@@ -107,52 +107,15 @@ noCarryLoop:
         // lIndex++
         add     LINDEX, LINDEX, 1
 
-        // branch
-        bhs     branchCarry
-        cmp     LINDEX, LSUMLENGTH
-        blt     noCarryLoop
-        b       endLoopNoCarry
+        // Loop condition
+        sub     x0, LINDEX, LSUMLENGTH
+        cbz     x0, forLoopEnd
+        b       forLoopStart
 
-carryLoop:
-        // ulSum = 1
-        mov     ULSUM, 1
-        
-        // ulSum += oAddend1->aulDigits[lIndex]
-        ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
-        adds    ULSUM, ULSUM, x0
-        bhs     carry
+forLoopEnd:
+        // branch based on carry
+        blo     endLoopNoCarry
 
-        // ulSum += oAddend2->aulDigits[lIndex]
-        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
-        adds    ULSUM, ULSUM, x0
-        b       finishCarry
-
-carry:
-        // ulSum += oAddend2->aulDigits[lIndex]
-        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
-        add     ULSUM, ULSUM, x0
-
-finishCarry:
-        // oSum->aulDigits[lIndex] = ulSum
-        str     ULSUM, [OSAULD, LINDEX, lsl INDEXMULT]
-
-        // lIndex++
-        add     LINDEX, LINDEX, 1
-
-        // branch
-        bhs     branchCarry
-
-        // if (lIndex < lSumLength) goto startForLoop1
-        cmp     LINDEX, LSUMLENGTH
-        blt     noCarryLoop
-        b       endLoopNoCarry
-
-branchCarry:
-        cmp     LINDEX, LSUMLENGTH
-        blt     carryLoop
-        b       endLoopCarry
-
-endLoopCarry:
         // if (lSumLength != MAX_DIGITS) goto endIf4
         mov     x0, MAX_DIGITS
         cmp     LSUMLENGTH, x0
