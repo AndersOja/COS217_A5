@@ -30,23 +30,25 @@
         .equ    oAddend1, 8
         .equ    oAddend2, 16
         .equ    oSum, 24
-        .equ    ulCarry, 32
-        .equ    ulSum, 40
-        .equ    lIndex, 48
-        .equ    lSumLength, 56
+        .equ    ulSum, 32
+        .equ    lIndex, 40
+        .equ    lSumLength, 48
+        
+        // Offsets and sizes for struct params
         .equ    LLENGTH, 0
         .equ    AULDIGITS, 8
         .equ    INDEXMULT, 3
+
+        // Registers for local variables
         OADDEND1        .req x4
         OADDEND2        .req x5
         OSUM            .req x6
-        ULCARRY         .req x7
-        ULSUM           .req x9
-        LINDEX          .req x10
-        LSUMLENGTH      .req x11
-        OA1AULD         .req x12
-        OA2AULD         .req x13
-        OSAULD          .req x14
+        ULSUM           .req x7
+        LINDEX          .req x9
+        LSUMLENGTH      .req x10
+        OA1AULD         .req x11
+        OA2AULD         .req x12
+        OSAULD          .req x13
 
         .global BigInt_add
 
@@ -91,13 +93,14 @@ endLarger:
         bl      memset
 
 endIf1:
-        // lIndex = 0
+        // lIndex = 0 and set carry flag to 0
         adds    LINDEX, xzr, xzr
 
 forLoopStart:
+        // loop condition
         sub     x0, LINDEX, LSUMLENGTH
         cbz     x0, forLoopEnd
-        
+
         // ulSum = oAddend1->aulDigits[lIndex]
         // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
@@ -110,7 +113,7 @@ forLoopStart:
         // lIndex++
         add     LINDEX, LINDEX, 1
 
-        // Loop condition
+        // back to start
         b       forLoopStart
 
 forLoopEnd:
