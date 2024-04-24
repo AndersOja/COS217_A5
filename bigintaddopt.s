@@ -29,32 +29,42 @@
         .equ    lLength1, 8
         .equ    lLength2, 16
         .equ    lLarger, 24
+        lLength1        .req x19
+        lLength2        .req x20
+        lLarger         .req x21
 
 
 BigInt_larger:
         // Prolog
         sub     sp, sp, LARGER_STACK_BYTECOUNT
         str     x30, [sp]
-        str     x0, [sp, lLength1]
-        str     x1, [sp, lLength2]
+        str     x19, [sp, lLength1]
+        str     x20, [sp, lLength2]
+        str     x21, [sp, lLarger]
+        mov     lLength1, x0
+        mov     lLength2, x1
+        
 
         // if (lLength1 <= lLength2) goto Else1
-        cmp     x0, x1
+        cmp     lLength1, lLength2
         ble     Else1
 
         // lLarger = lLength1
-        ldr     x0, [sp, lLength1]
-        str     x0, [sp, lLarger]
+        mov     lLarger, lLength1
 
         // goto endIf1
         b       endIf1
 
 Else1:
-        ldr     x0, [sp, lLength2]
-        str     x0, [sp, lLarger]
+        // lLarger = lLength2
+        mov     lLarger, lLength2
 
 endIf1:
-        ldr     x0, [sp, lLarger]
+        // Epilogue and return lLarger
+        mov     x0, lLarger
+        ldr     lLength1, [sp, lLength1]
+        ldr     lLength2, [sp, lLength2]
+        ldr     lLarger, [sp, lLarger]
         ldr     x30, [sp]
         add     sp, sp, LARGER_STACK_BYTECOUNT
         ret
@@ -80,6 +90,13 @@ endIf1:
         .equ    LLENGTH, 0
         .equ    AULDIGITS, 8
         .equ    INDEXMULT, 3
+        oAddend1        .req x19
+        oAddend2        .req x20
+        oSum            .req x21
+        ulCarry         .req x22
+        ulSum           .req x23
+        lIndex          .req x24
+        lSumLength      .req x25
 
         .global BigInt_add
 
@@ -87,9 +104,21 @@ BigInt_add:
         // Prolog
         sub     sp, sp, ADD_STACK_BYTECOUNT
         str     x30, [sp]
+
         str     x0, [sp, oAddend1]
         str     x1, [sp, oAddend2]
         str     x2, [sp, oSum]
+
+        //str     oAddend1, [sp, oAddend1]
+        //str     oAddend2, [sp, oAddend2]
+        //str     oSum, [sp, oSum]
+        //str     ulCarry, [sp, ulCarry]
+        //str     ulSum, [sp, ulSum]
+        //str     lIndex, [sp, lIndex]
+        //str     lSumLength, [sp, lSumLength]
+        //mov     oAddend1, x0 
+        //mov     oAddend2, x1
+        //mov     oSum, x2
 
         // lSumLength = BigInt_larger(oAddend1->lLength, 
         // oAddend2->lLength)

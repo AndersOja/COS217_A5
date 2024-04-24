@@ -50,10 +50,12 @@ BigInt_larger:
         b       endIf1
 
 Else1:
+        // lLarger = lLength2
         ldr     x0, [sp, lLength2]
         str     x0, [sp, lLarger]
 
 endIf1:
+        // Epilogue and return lLarger
         ldr     x0, [sp, lLarger]
         ldr     x30, [sp]
         add     sp, sp, LARGER_STACK_BYTECOUNT
