@@ -92,7 +92,7 @@ endLarger:
 
 endIf1:
         // lIndex = 0
-        adds    LINDEX, xzr, 0
+        adds    LINDEX, xzr, xzr
 
 forLoopStart:
         // ulSum = oAddend1->aulDigits[lIndex]
