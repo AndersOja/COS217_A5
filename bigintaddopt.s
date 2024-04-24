@@ -29,7 +29,7 @@
         .equ    lLength1, 8
         .equ    lLength2, 16
         .equ    lLarger, 24
-        LLENGTH1        .req x  19
+        LLENGTH1        .req x19
         LLENGTH2        .req x20
         LLARGER         .req x21
 
