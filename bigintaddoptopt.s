@@ -95,6 +95,9 @@ endIf1:
         adds    LINDEX, xzr, xzr
 
 forLoopStart:
+        sub     x0, LINDEX, LSUMLENGTH
+        cbz     x0, forLoopEnd
+        
         // ulSum = oAddend1->aulDigits[lIndex]
         // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
@@ -108,8 +111,6 @@ forLoopStart:
         add     LINDEX, LINDEX, 1
 
         // Loop condition
-        sub     x0, LINDEX, LSUMLENGTH
-        cbz     x0, forLoopEnd
         b       forLoopStart
 
 forLoopEnd:
