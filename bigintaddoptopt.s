@@ -98,8 +98,8 @@ endIf2:
 
 startForLoop1:
         // if(lIndex >= lSumLength) goto endForLoop1
-        cmp     LINDEX, LSUMLENGTH
-        bge     endForLoop1
+        // cmp     LINDEX, LSUMLENGTH
+        // bge     endForLoop1
 
         // ulSum = ulCarry
         mov     ULSUM, ULCARRY
@@ -136,7 +136,7 @@ ForIf1:
         // ulCarry = 1
         mov     ULCARRY, 1
 
-    ForIf2:
+ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
         add     x0, OSUM, AULDIGITS
         str     ULSUM, [x0, LINDEX, lsl INDEXMULT]
@@ -145,8 +145,9 @@ ForIf1:
         // lIndex++
         add     LINDEX, LINDEX, 1
 
-        // goto startForLoop1
-        b       startForLoop1
+        // if (lIndex < lSumLength) goto startForLoop1
+        cmp     LINDEX, LSUMLENGTH
+        blt     startForLoop1
 
 endForLoop1:
         // if (ulCarry != 1) goto endIf3

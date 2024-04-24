@@ -182,7 +182,7 @@ ForIf1:
         // ulCarry = 1
         mov     ULCARRY, 1
 
-    ForIf2:
+ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
         add     x0, OSUM, AULDIGITS
         str     ULSUM, [x0, LINDEX, lsl INDEXMULT]
