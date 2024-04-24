@@ -2,7 +2,7 @@
         .equ    TRUE, 1
         .equ    MAX_DIGITS, 32768
 
-//----------------------------------------------------------------------
+//----------------------------------------------------------------------  
 
         .section .rodata
 
@@ -18,10 +18,9 @@
 
         .section .text
 
-
         //--------------------------------------------------------------
-        // Assign the sum of oAddend1 and oAddend2 to oSum. oSum should
-        // be distinct from oAddend1 and oAddend2.  Return 0 (FALSE)
+        // Assign the sum of oAddend1 and oAddend2 to oSum. oSum should 
+        // be distinct from oAddend1 and oAddend2.  Return 0 (FALSE) 
         // if an overflow occurred, and 1 (TRUE) otherwise.
         //--------------------------------------------------------------
 
@@ -63,7 +62,7 @@ BigInt_add:
         mov     OADDEND2, x1
         mov     OSUM, x2
 
-        // lSumLength = BigInt_larger(oAddend1->lLength,
+        // lSumLength = BigInt_larger(oAddend1->lLength, 
         // oAddend2->lLength)
         ldr     x0, [OADDEND1, LLENGTH]
         ldr     x1, [OADDEND2, LLENGTH]
@@ -73,11 +72,10 @@ BigInt_add:
         b       endLarger
 
 L1LessL2:
-        // lLarger = lLength2
+        // lSumLength = oAddend2->lLength
         mov     LSUMLENGTH, x1
 
 endLarger:
-
         // if (oSum->lLength <= lSumLength) goto endIf2
         ldr     x0, [OSUM, LLENGTH]
         cmp     x0, LSUMLENGTH
@@ -99,12 +97,16 @@ endIf2:
         mov     LINDEX, 0
 
 startForLoop1:
+        // if(lIndex >= lSumLength) goto endForLoop1
+        cmp     LINDEX, LSUMLENGTH
+        bge     endForLoop1
+
         // ulSum = ulCarry
         mov     ULSUM, ULCARRY
 
         // ulCarry = 0
         mov     ULCARRY, 0
-
+        
         // ulSum += oAddend1->aulDigits[lIndex]
         add     x0, OADDEND1, AULDIGITS
         ldr     x0, [x0, LINDEX, lsl INDEXMULT]
@@ -134,7 +136,7 @@ ForIf1:
         // ulCarry = 1
         mov     ULCARRY, 1
 
-ForIf2:
+    ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
         add     x0, OSUM, AULDIGITS
         str     ULSUM, [x0, LINDEX, lsl INDEXMULT]
@@ -143,12 +145,13 @@ ForIf2:
         // lIndex++
         add     LINDEX, LINDEX, 1
 
-        // if(lIndex < lSumLength) goto startForLoop1
-        cmp     LINDEX, LSUMLENGTH
-        blt     startForLoop1
+        // goto startForLoop1
+        b       startForLoop1
 
-        // if (ulCarry == 0) goto endIf3
-        cmp     ULCARRY, xzr
+endForLoop1:
+        // if (ulCarry != 1) goto endIf3
+        mov     x0, 1
+        cmp     ULCARRY, x0
         bne     endIf3
 
         // if (lSumLength != MAX_DIGITS) goto endIf4
@@ -156,7 +159,7 @@ ForIf2:
         cmp     LSUMLENGTH, x0
         bne     endIf4
 
-        // Epilogue and return FALSE
+        // Epilogue and return FALSE DO SHIT HERE
         mov     x0, FALSE
         ldr     x30, [sp]
         ldr     OADDEND1, [sp, oAddend1]
@@ -173,7 +176,7 @@ endIf4:
         // oSum->aulDigits[lSumLength] = 1
         add     x0, OSUM, AULDIGITS
         mov     x1, 1
-        str     x1, [x0, LSUMLENGTH, lsl INDEXMULT]
+        str     x1, [x0, LINDEX, lsl INDEXMULT]
 
         // lSumLength++
         add     LSUMLENGTH, LSUMLENGTH, 1
@@ -193,7 +196,7 @@ endIf3:
         ldr     LINDEX, [sp, lIndex]
         ldr     LSUMLENGTH, [sp, lSumLength]
         add     sp, sp, ADD_STACK_BYTECOUNT
-        ret
+        ret  
 
         .size   BigInt_add, (. - BigInt_add)
         
