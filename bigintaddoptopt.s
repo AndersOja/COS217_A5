@@ -121,12 +121,12 @@ BigInt_add:
         ldr     x1, [OADDEND2, LLENGTH]
         cmp     x0, x1
         ble     L1LessL2
-        mov     LSUMLENGTH, LLENGTH1
+        mov     LSUMLENGTH, x0
         b       endLarger
 
 L1LessL2:
         // lLarger = lLength2
-        mov     LSUMLENGTH, LLENGTH2
+        mov     LSUMLENGTH, x1
 
 endLarger:
 
