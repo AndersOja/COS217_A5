@@ -17,7 +17,18 @@ information given in the "Policies" web page (also available on armlab
 in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
+The course's lectures.
 
+The course's precepts.
+
+The course's website.
+
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+
+The course's textbooks and reference manuals.
+
+The course's current staff members outside of class time through Ed.
 
 ------------------------------------------------------------------------
 Student 2: What authorized sources of information did you use to
@@ -26,7 +37,18 @@ information given in the "Policies" web page (also available on armlab
 in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
+The course's lectures.
 
+The course's precepts.
+
+The course's website.
+
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+
+The course's textbooks and reference manuals.
+
+The course's current staff members outside of class time through Ed.
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -40,7 +62,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 2: What unauthorized sources of information did you use to
@@ -54,18 +76,26 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 1: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+This was actually one of my favorite assignments of the semester. I 
+thought that coding in Assembly wasn't quite as stressful as coding 
+in a higher-level language. While it was not necessarily fun, I do think
+it was a good introduction to coding in assembly and I think that I
+learned a great deal from it.
 
 ------------------------------------------------------------------------
 Student 2: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
+I thought the assignment was definetly helpful and overall fairly fun.
+I felt that I learned quite a bit about assembly langauge and 
+optimization and enjoyed trying to beat the compiler and come up with 
+faster methods and functions. 
 
 
 ------------------------------------------------------------------------
@@ -89,10 +119,7 @@ mywcBoundary1.txt: Single character 'a'. Tests an output of 1 character,
 mywcBoundary2.txt: Only a few newlines. Tests an output of 0 words, and 
 as many characters as lines. 
 
-mywcBoundary3.txt: A few random words. Tests an output of 0 lines, and 
-nonzero characters and words. 
-
-mywcBoundary4.txt: A line of all spaces. Tests an output of 0 lines and
+mywcBoundary3.txt: A line of all spaces. Tests an output of 0 lines and
 words, and a some characters.
 
 Statement tests:
@@ -105,21 +132,13 @@ computer to execute all lines except 36 and 37.
 
 Stress tests:
 
-mywcStress0.txt: A long line of all 'a's. Tests counting 1 word with a 
-very large number of characters.
+mywcStress0.txt: contains 48,000 random readable ASCII characters 
+created with a C program. Tests if our program can manage huge amounts
+of random character input. 
 
-mywcStress1.txt: A lot of newline characters. Tests counting a lot of 
-lines with no words. 
-
-mywcStress2.txt: A bunch of "word"s on many lines. Tests a large file 
-with a lot of words and lines. 
-
-mywcStress3.txt: A passage from Dickens. Tests a normal use case with 
-punctuation. 
-
-mywcStress4.txt: Complete gibberish. Tests a variety of special 
-characters and different whitespace characters in different 
-combinations.
+mywcStress1.txt: contains 48,000 random readable ASCII characters 
+created with a C program. Tests if our program can manage huge amounts
+of random character input for a second time. 
 
 ------------------------------------------------------------------------
 What are the CPU times consumed by the programs from Parts 2a, 2b, 2d,
@@ -134,7 +153,3 @@ Part 2d:  10.541088 seconds
 Part 2e:  4.146129 seconds
 
 Part 2f:  1.829735 seconds
-
-
-
-
