@@ -108,41 +108,34 @@ startForLoop1:
         // ulSum += oAddend1->aulDigits[lIndex]
         add     x0, OADDEND1, AULDIGITS
         ldr     x0, [x0, LINDEX, lsl INDEXMULT]
-        adcs     ULSUM, ULSUM, x0
-
-        // if (ulSum >= oAddend1->aulDigits[lIndex]) goto ForIf1
-        // add     x0, OADDEND1, AULDIGITS
-        // ldr     x0, [x0, LINDEX, lsl INDEXMULT]
-        // cmp     ULSUM, x0
+        adcs    ULSUM, ULSUM, x0
         bhs     ForIf1
 
-        // ulCarry = 1
-        mov     ULCARRY, 1
+        // ulSum += oAddend2->aulDigits[lIndex]
+        add     x0, OADDEND2, AULDIGITS
+        ldr     x0, [x0, LINDEX, lsl INDEXMULT]
+        adcs    ULSUM, ULSUM, x0
+        b       ForIf2
 
 ForIf1:
         // ulSum += oAddend2->aulDigits[lIndex]
         add     x0, OADDEND2, AULDIGITS
         ldr     x0, [x0, LINDEX, lsl INDEXMULT]
-        adcs     ULSUM, ULSUM, x0
-
-        // if (ulSum >= oAddend2->aulDigits[lIndex]) goto ForIf2
-        // add     x0, OADDEND2, AULDIGITS
-        // ldr     x0, [x0, LINDEX, lsl INDEXMULT]
-        // cmp     ULSUM, x0
-        bhs     ForIf2
-
-        // ulCarry = 1
-        mov     ULCARRY, 1
+        add     ULSUM, ULSUM, x0
 
 ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
         add     x0, OSUM, AULDIGITS
         str     ULSUM, [x0, LINDEX, lsl INDEXMULT]
 
-
         // lIndex++
         add     LINDEX, LINDEX, 1
 
+        // Set ulCarry
+        blo     endCarry
+        mov     ULCARRY, 1
+
+endCarry:
         // if(lIndex < lSumLength) goto startForLoop1
         cmp     LINDEX, LSUMLENGTH
         blt     startForLoop1
