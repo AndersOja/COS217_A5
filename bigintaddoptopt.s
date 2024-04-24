@@ -80,7 +80,7 @@ endLarger:
         // if (oSum->lLength <= lSumLength) goto endIf2
         ldr     x0, [OSUM, LLENGTH]
         cmp     x0, LSUMLENGTH
-        ble     endIf2
+        ble     endIf1
 
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long))
         mov     x0, OSAULD
@@ -90,78 +90,92 @@ endLarger:
         mul     x2, x2, x3
         bl      memset
 
-endIf2:
-        // ulCarry = 0
-        mov     ULCARRY, 0
-
+endIf1:
         // lIndex = 0
         mov     LINDEX, 0
 
-startForLoop1:
-        // ulSum = ulCarry
-        mov     ULSUM, ULCARRY
-
-        // ulCarry = 0
-        mov     ULCARRY, 0
-        
-        // ulSum += oAddend1->aulDigits[lIndex]
+noCarryLoop:
+        // ulSum = oAddend1->aulDigits[lIndex]
         ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
-        add     ULSUM, ULSUM, x0
-        cmp     ULSUM, x0
-        bhs     ForIf1
-
-        // ulCarry = 1
-        mov     ULCARRY, 1
-
-ForIf1:
+        mov     ULSUM, x0
+        
         // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
-        add     ULSUM, ULSUM, x0
-        cmp     ULSUM, x0
-        bhs     ForIf2
+        adds    ULSUM, ULSUM, x0
 
-        // ulCarry = 1
-        mov     ULCARRY, 1
-
-ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
         str     ULSUM, [OSAULD, LINDEX, lsl INDEXMULT]
-
 
         // lIndex++
         add     LINDEX, LINDEX, 1
 
+        // branch
+        bhs     branchCarry
+        cmp     LINDEX, LSUMLENGTH
+        blt     noCarryLoop
+        b       endLoopNoCarry
+
+carryLoop:
+        // ulSum = 1
+        mov     ULSUM, 1
+        
+        // ulSum += oAddend1->aulDigits[lIndex]
+        ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
+        adds    ULSUM, ULSUM, x0
+        bhs     carry
+
+        // ulSum += oAddend2->aulDigits[lIndex]
+        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
+        adds    ULSUM, ULSUM, x0
+        b       finishCarry
+
+carry:
+        // ulSum += oAddend2->aulDigits[lIndex]
+        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
+        add     ULSUM, ULSUM, x0
+
+finishCarry:
+        // oSum->aulDigits[lIndex] = ulSum
+        str     ULSUM, [OSAULD, LINDEX, lsl INDEXMULT]
+
+        // lIndex++
+        add     LINDEX, LINDEX, 1
+
+        // branch
+        bhs     branchCarry
+
         // if (lIndex < lSumLength) goto startForLoop1
         cmp     LINDEX, LSUMLENGTH
-        blt     startForLoop1
+        blt     noCarryLoop
+        b       endLoopNoCarry
 
-endForLoop1:
-        // if (ulCarry != 1) goto endIf3
-        mov     x0, 1
-        cmp     ULCARRY, x0
-        bne     endIf3
+branchCarry:
+        cmp     LINDEX, LSUMLENGTH
+        blt     carryLoop
+        b       endLoopCarry
 
+endLoopCarry:
         // if (lSumLength != MAX_DIGITS) goto endIf4
         mov     x0, MAX_DIGITS
         cmp     LSUMLENGTH, x0
-        bne     endIf4
+        bne     endIf2
 
-        // Epilogue and return FALSE DO SHIT HERE
+        // Epilogue and return FALSE
         mov     x0, FALSE
         ldr     x30, [sp]
         add     sp, sp, ADD_STACK_BYTECOUNT
         ret
 
-endIf4:
+endIf2:
         // oSum->aulDigits[lSumLength] = 1
         add     x0, OSUM, AULDIGITS
         mov     x1, 1
-        str     x1, [x0, LINDEX, lsl INDEXMULT]
+        str     x1, [x0, LSUMLENGTH, lsl INDEXMULT]
 
         // lSumLength++
         add     LSUMLENGTH, LSUMLENGTH, 1
 
-endIf3:
+endLoopNoCarry:
         // oSum->lLength = lSumLength
         str     LSUMLENGTH, [OSUM, LLENGTH]
 

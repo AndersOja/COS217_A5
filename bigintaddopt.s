@@ -222,7 +222,7 @@ endIf4:
         // oSum->aulDigits[lSumLength] = 1
         add     x0, OSUM, AULDIGITS
         mov     x1, 1
-        str     x1, [x0, LINDEX, lsl INDEXMULT]
+        str     x1, [x0, LSUMLENGTH, lsl INDEXMULT]
 
         // lSumLength++
         add     LSUMLENGTH, LSUMLENGTH, 1
