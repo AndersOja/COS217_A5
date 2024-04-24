@@ -29,9 +29,9 @@
         .equ    lLength1, 8
         .equ    lLength2, 16
         .equ    lLarger, 24
-        lLength1        .req x19
-        lLength2        .req x20
-        lLarger         .req x21
+        LLENGTH1        .req x  19
+        LLENGTH2        .req x20
+        LLARGER         .req x21
 
 
 BigInt_larger:
@@ -41,30 +41,30 @@ BigInt_larger:
         str     x19, [sp, lLength1]
         str     x20, [sp, lLength2]
         str     x21, [sp, lLarger]
-        mov     lLength1, x0
-        mov     lLength2, x1
+        mov     LLENGTH1, x0
+        mov     LLENGTH2, x1
         
 
         // if (lLength1 <= lLength2) goto Else1
-        cmp     lLength1, lLength2
+        cmp     LLENGTH1, LLENGTH2
         ble     Else1
 
         // lLarger = lLength1
-        mov     lLarger, lLength1
+        mov     LLARGER, LLENGTH1
 
         // goto endIf1
         b       endIf1
 
 Else1:
         // lLarger = lLength2
-        mov     lLarger, lLength2
+        mov     LLARGER, LLENGTH2
 
 endIf1:
         // Epilogue and return lLarger
-        mov     x0, lLarger
-        ldr     lLength1, [sp, lLength1]
-        ldr     lLength2, [sp, lLength2]
-        ldr     lLarger, [sp, lLarger]
+        mov     x0, LLARGER
+        ldr     LLENGTH1, [sp, lLength1]
+        ldr     LLENGTH2, [sp, lLength2]
+        ldr     LLARGER, [sp, lLarger]
         ldr     x30, [sp]
         add     sp, sp, LARGER_STACK_BYTECOUNT
         ret
@@ -90,13 +90,13 @@ endIf1:
         .equ    LLENGTH, 0
         .equ    AULDIGITS, 8
         .equ    INDEXMULT, 3
-        oAddend1        .req x19
-        oAddend2        .req x20
-        oSum            .req x21
-        ulCarry         .req x22
-        ulSum           .req x23
-        lIndex          .req x24
-        lSumLength      .req x25
+        OADDEND1        .req x19
+        OADDEND2        .req x20
+        OSUM            .req x21
+        ULCARRY         .req x22
+        ULSUM           .req x23
+        LINDEX          .req x24
+        LSUMLENGTH      .req x25
 
         .global BigInt_add
 
