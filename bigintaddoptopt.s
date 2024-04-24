@@ -37,6 +37,9 @@
         .equ    LLENGTH, 0
         .equ    AULDIGITS, 8
         .equ    INDEXMULT, 3
+        OA1AULD         .req x9
+        OA2AULD         .req x10
+        OSAULD          .req x11
         OADDEND1        .req x19
         OADDEND2        .req x20
         OSUM            .req x21
@@ -62,6 +65,11 @@ BigInt_add:
         mov     OADDEND2, x1
         mov     OSUM, x2
 
+        // set auldigits registers
+        add     OA1AULD, OADDEND1, AULDIGITS
+        add     OA2AULD, OADDEND2, AULDIGITS
+        add     OSAULD, OSUM, AULDIGITS
+
         // lSumLength = BigInt_larger(oAddend1->lLength, 
         // oAddend2->lLength)
         ldr     x0, [OADDEND1, LLENGTH]
@@ -82,7 +90,7 @@ endLarger:
         ble     endIf2
 
         // memset(oSum->aulDigits, 0, MAX_DIGITS * sizeof(unsigned long))
-        add     x0, OSUM, AULDIGITS
+        mov     x0, OSAULD
         mov     x1, 0
         mov     x2, MAX_DIGITS
         mov     x3, 8
@@ -104,8 +112,7 @@ startForLoop1:
         mov     ULCARRY, 0
         
         // ulSum += oAddend1->aulDigits[lIndex]
-        add     x0, OADDEND1, AULDIGITS
-        ldr     x0, [x0, LINDEX, lsl INDEXMULT]
+        ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
         add     ULSUM, ULSUM, x0
         cmp     ULSUM, x0
         bhs     ForIf1
@@ -115,8 +122,7 @@ startForLoop1:
 
 ForIf1:
         // ulSum += oAddend2->aulDigits[lIndex]
-        add     x0, OADDEND2, AULDIGITS
-        ldr     x0, [x0, LINDEX, lsl INDEXMULT]
+        ldr     x0, [OA2AULD, LINDEX, lsl INDEXMULT]
         add     ULSUM, ULSUM, x0
         cmp     ULSUM, x0
         bhs     ForIf2
@@ -126,8 +132,7 @@ ForIf1:
 
 ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
-        add     x0, OSUM, AULDIGITS
-        str     ULSUM, [x0, LINDEX, lsl INDEXMULT]
+        str     ULSUM, [OSAULD, LINDEX, lsl INDEXMULT]
 
 
         // lIndex++
