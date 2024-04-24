@@ -4,9 +4,8 @@
 
 int main() {
     int i;
-    for(i = 0; i < 48000; i++) {\
+    for(i = 0; i < 48000; i++) {
         int randnum;
-        srand(time(NULL));
         randnum = rand() % 97 + 32;
         if (randnum == 127) randnum = 9;
         else if (randnum == 128) randnum = 10;
