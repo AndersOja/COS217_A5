@@ -2,7 +2,7 @@
         .equ    TRUE, 1
         .equ    MAX_DIGITS, 32768
 
-//----------------------------------------------------------------------  
+//----------------------------------------------------------------------
 
         .section .rodata
 
@@ -20,8 +20,8 @@
 
 
         //--------------------------------------------------------------
-        // Assign the sum of oAddend1 and oAddend2 to oSum. oSum should 
-        // be distinct from oAddend1 and oAddend2.  Return 0 (FALSE) 
+        // Assign the sum of oAddend1 and oAddend2 to oSum. oSum should
+        // be distinct from oAddend1 and oAddend2.  Return 0 (FALSE)
         // if an overflow occurred, and 1 (TRUE) otherwise.
         //--------------------------------------------------------------
 
@@ -63,7 +63,7 @@ BigInt_add:
         mov     OADDEND2, x1
         mov     OSUM, x2
 
-        // lSumLength = BigInt_larger(oAddend1->lLength, 
+        // lSumLength = BigInt_larger(oAddend1->lLength,
         // oAddend2->lLength)
         ldr     x0, [OADDEND1, LLENGTH]
         ldr     x1, [OADDEND2, LLENGTH]
@@ -104,7 +104,7 @@ startForLoop1:
 
         // ulCarry = 0
         mov     ULCARRY, 0
-        
+
         // ulSum += oAddend1->aulDigits[lIndex]
         add     x0, OADDEND1, AULDIGITS
         ldr     x0, [x0, LINDEX, lsl INDEXMULT]
@@ -134,7 +134,7 @@ ForIf1:
         // ulCarry = 1
         mov     ULCARRY, 1
 
-    ForIf2:
+ForIf2:
         // oSum->aulDigits[lIndex] = ulSum
         add     x0, OSUM, AULDIGITS
         str     ULSUM, [x0, LINDEX, lsl INDEXMULT]
@@ -157,7 +157,7 @@ ForIf1:
         cmp     LSUMLENGTH, x0
         bne     endIf4
 
-        // Epilogue and return FALSE DO SHIT HERE
+        // Epilogue and return FALSE
         mov     x0, FALSE
         ldr     x30, [sp]
         ldr     OADDEND1, [sp, oAddend1]
@@ -194,7 +194,6 @@ endIf3:
         ldr     LINDEX, [sp, lIndex]
         ldr     LSUMLENGTH, [sp, lSumLength]
         add     sp, sp, ADD_STACK_BYTECOUNT
-        ret  
+        ret
 
         .size   BigInt_add, (. - BigInt_add)
-        
