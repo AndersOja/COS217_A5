@@ -73,7 +73,7 @@ BigInt_add:
         b       endLarger
 
 L1LessL2:
-        // lLarger = lLength2
+        // lSumLength = oAddend2->lLength
         mov     LSUMLENGTH, x1
 
 endLarger:
@@ -140,10 +140,9 @@ endCarry:
         cmp     LINDEX, LSUMLENGTH
         blt     startForLoop1
 
-        // if (ulCarry != 1) goto endIf3
-        mov     x0, 1
-        cmp     ULCARRY, x0
-        bne     endIf3
+        // if (ulCarry == 0) goto endIf3
+        cmp     ULCARRY, xzr
+        beq     endIf3
 
         // if (lSumLength != MAX_DIGITS) goto endIf4
         mov     x0, MAX_DIGITS
@@ -167,7 +166,7 @@ endIf4:
         // oSum->aulDigits[lSumLength] = 1
         add     x0, OSUM, AULDIGITS
         mov     x1, 1
-        str     x1, [x0, LINDEX, lsl INDEXMULT]
+        str     x1, [x0, LSUMLENGTH, lsl INDEXMULT]
 
         // lSumLength++
         add     LSUMLENGTH, LSUMLENGTH, 1
