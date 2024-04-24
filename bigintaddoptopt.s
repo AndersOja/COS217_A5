@@ -37,16 +37,16 @@
         .equ    LLENGTH, 0
         .equ    AULDIGITS, 8
         .equ    INDEXMULT, 3
-        OA1AULD         .req x9
-        OA2AULD         .req x10
-        OSAULD          .req x11
-        OADDEND1        .req x19
-        OADDEND2        .req x20
-        OSUM            .req x21
-        ULCARRY         .req x22
-        ULSUM           .req x23
-        LINDEX          .req x24
-        LSUMLENGTH      .req x25
+        OADDEND1        .req x4
+        OADDEND2        .req x5
+        OSUM            .req x6
+        ULCARRY         .req x7
+        ULSUM           .req x9
+        LINDEX          .req x10
+        LSUMLENGTH      .req x11
+        OA1AULD         .req x12
+        OA2AULD         .req x13
+        OSAULD          .req x14
 
         .global BigInt_add
 
@@ -54,13 +54,6 @@ BigInt_add:
         // Prolog
         sub     sp, sp, ADD_STACK_BYTECOUNT
         str     x30, [sp]
-        str     OADDEND1, [sp, oAddend1]
-        str     OADDEND2, [sp, oAddend2]
-        str     OSUM, [sp, oSum]
-        str     ULCARRY, [sp, ulCarry]
-        str     ULSUM, [sp, ulSum]
-        str     LINDEX, [sp, lIndex]
-        str     LSUMLENGTH, [sp, lSumLength]
         mov     OADDEND1, x0
         mov     OADDEND2, x1
         mov     OSUM, x2
@@ -156,13 +149,6 @@ endForLoop1:
         // Epilogue and return FALSE DO SHIT HERE
         mov     x0, FALSE
         ldr     x30, [sp]
-        ldr     OADDEND1, [sp, oAddend1]
-        ldr     OADDEND2, [sp, oAddend2]
-        ldr     OSUM, [sp, oSum]
-        ldr     ULCARRY, [sp, ulCarry]
-        ldr     ULSUM, [sp, ulSum]
-        ldr     LINDEX, [sp, lIndex]
-        ldr     LSUMLENGTH, [sp, lSumLength]
         add     sp, sp, ADD_STACK_BYTECOUNT
         ret
 
@@ -182,13 +168,6 @@ endIf3:
         // Epilogue and return TRUE
         mov x0, TRUE
         ldr     x30, [sp]
-        ldr     OADDEND1, [sp, oAddend1]
-        ldr     OADDEND2, [sp, oAddend2]
-        ldr     OSUM, [sp, oSum]
-        ldr     ULCARRY, [sp, ulCarry]
-        ldr     ULSUM, [sp, ulSum]
-        ldr     LINDEX, [sp, lIndex]
-        ldr     LSUMLENGTH, [sp, lSumLength]
         add     sp, sp, ADD_STACK_BYTECOUNT
         ret  
 
