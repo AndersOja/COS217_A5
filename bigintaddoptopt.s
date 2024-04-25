@@ -96,11 +96,11 @@ endIf1:
         // lIndex = 0 and set carry flag to 0
         adds    LINDEX, xzr, xzr
 
-forLoopStart:
-        // loop condition
+        // initial loop condition
         sub     x0, LINDEX, LSUMLENGTH
         cbz     x0, forLoopEnd
 
+forLoopStart:
         // ulSum = oAddend1->aulDigits[lIndex]
         // ulSum += oAddend2->aulDigits[lIndex]
         ldr     x0, [OA1AULD, LINDEX, lsl INDEXMULT]
@@ -113,8 +113,9 @@ forLoopStart:
         // lIndex++
         add     LINDEX, LINDEX, 1
 
-        // back to start
-        b       forLoopStart
+        // loop condition
+        sub     x0, LINDEX, LSUMLENGTH
+        cbnz    x0, forLoopStart
 
 forLoopEnd:
         // branch based on carry
